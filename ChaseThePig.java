@@ -9,7 +9,7 @@ package chase.the.pig;
 import java.util.*;
 
 public class ChaseThePig {
-boolean exPig, exGoat, exMulti, exAce = false;
+
     /**
      * @param args the command line arguments
      */
