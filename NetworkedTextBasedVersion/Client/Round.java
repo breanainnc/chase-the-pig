@@ -33,7 +33,8 @@ public class Round {
             revealCards();
             displayExposed();
             displayHand();
-            
+            startRound();
+            play();
             
         }
         catch(IOException ex){
@@ -41,21 +42,40 @@ public class Round {
         }
     }
     
-
-      public void play(){
+    public void startRound(){
+        if(haveTwoOfSpades() == true){
+            ChooseCard();
+        }
+    }
+    public void play(){
           while(true){
               try{
                   String instruction = in.readLine();
                   if(instruction.contains("YOURTURN")){
                       ChooseCard();
                   }
-                  if(instruction.contains("ENDTRICK")){
+                  else if(instruction.contains("ENDTRICK")){
                       firstCardPlayed = -1;
+                      char winner = instruction.charAt(8);
+                      int win = winner - '0';
+                      win++;
+                      System.out.println("!!!!!!!!!Player "+win+ " Wins This Hand!!!!!!!!");
+                      displayExposed();
+                      displayHand();
                   }
-                  if(instruction.contains("CARD")){
-                     // receiveCard();
+                  else if(instruction.contains("FIRSTCARD")){
+                      String c = instruction.substring(9);
+                      int card = Integer.parseInt(c);
+                      firstCardPlayed = card;
+                      receiveCard(card);
                   }
-                  if(instruction.contains("END")){
+                  else if(instruction.contains("CARD")){
+                      String c = instruction.substring(4);
+                      int card = Integer.parseInt(c);
+                      receiveCard(card);
+                  }
+                  else if(instruction.contains("ENDROUND")){
+                      System.out.println(in.readLine());
                       break;
                   }
               }
@@ -63,20 +83,22 @@ public class Round {
                   System.err.println(ex);
               }
           }
-          
-          
-      }
-      public void ChooseCard(){
-          
+        }
+    
+    public void ChooseCard(){
+ 
           Scanner input = new Scanner(System.in);
           System.out.print("Play a card: ");
-          int card = input.nextInt();
-          if(card > 0 && card < hand.size()){
+          int choice = input.nextInt();
+          
+          if(choice >= 0 && choice < hand.size()){
               if(firstCardPlayed == -1){
-                 out.println("CARD" + card);
+                 out.println("PLAY" + hand.get(choice));
+                 hand.remove(choice);
               }
-              else if(ifPlayable(card) == true){
-                  out.println("CARD" + card);
+              else if(ifPlayable(hand.get(choice)) == true){
+                  out.println("PLAY" + hand.get(choice));
+                  hand.remove(choice);
               }
               else{
                   System.out.println("YOU MUST PLAY THE SAME SUIT");
@@ -166,12 +188,14 @@ public class Round {
       
       //DISPLAYS THE EXPOSED HAND
       public void displayExposed(){
-          System.out.println("Exposed Cards: ");
-          for(int i = 0; i < exposedCards.size(); i++){
-              int player = exposedCards.get(i) % 10;
-              int card = exposedCards.get(i) / 10;
-              System.out.print("   Player " + player + ":");
-              displaycard(card);
+          if(!exposedCards.isEmpty()){
+              System.out.println("Exposed Cards: ");
+              for(int i = 0; i < exposedCards.size(); i++){
+                  int player = exposedCards.get(i) % 10;
+                  int card = exposedCards.get(i) / 10;
+                  System.out.print("   Player " + player + ":");
+                  displaycard(card);
+            }
           }
       }
       
@@ -271,6 +295,7 @@ public class Round {
             }
             else{
                 System.out.println("your card was not revealed");
+                out.println("NOREVEAL");
             }
         }
         recieveExposed();
@@ -285,7 +310,9 @@ public class Round {
             int end = 3;
             for(int i = 0; i < 4; i++){
                 int card = Integer.parseInt(read.substring(start, end));
-                exposedCards.add(card);
+                if(card != 0){
+                    exposedCards.add(card);
+                }
                 start += 3;
                 end += 3;
             }
@@ -293,5 +320,10 @@ public class Round {
         catch(IOException ex){
             System.err.println(ex);
         }
+    }
+
+    private void receiveCard(int card) {
+        System.out.print("                     Played Card: ");
+        displaycard(card);
     }
 }
