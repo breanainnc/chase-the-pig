@@ -1,7 +1,7 @@
 package server;
 
 //import java.net.*;
-import java.io.*;
+//import java.io.*;
 /**
  *
  * @author brean
@@ -18,13 +18,13 @@ import java.io.*;
     
     public Game(){
         this.deck = new Deck();
-        this.trick = new Trick();
         this.score = new Score();
+        this.trick = new Trick(score);
         this.players = new Player[4];
         this.exposed = "";
     }
     
-    //WHEN THE FOUR PLAYERS ANNOUNCE THEIR READY THIS METHOD DEALS
+    //WHEN THE FOUR PLAYERS ANNOUNCE THEY ARE READY THIS METHOD DEALS
     public void readyToDeal(){
         readyToDeal++;
         if(readyToDeal == 4){
@@ -36,13 +36,52 @@ import java.io.*;
     
     //WHEN A CARD IS PLAYED
     public void playCard(int p, int card){
+        if(trick.emptyTrick() == true){
+            for(int i = 0; i < 4; i++){
+                players[i].Tellplayer("FIRSTCARD" + card);
+            }
+         }
+        else{
+            for(int i = 0; i < 4; i++){
+                players[i].Tellplayer("CARD" + card);
+           }
+        }
         trick.addCard(card,p);
+       
+        
+        if(trick.endtrick() == true){
+            int winner = trick.winner();
+            for(int i = 0; i < 4; i++){
+                players[i].Tellplayer("ENDTRICK" + winner);
+            }
+            
+            //CHECKS IF ROUND IS OVER
+            if(trick.roundOver() != true)
+                players[winner].Tellplayer("YOURTURN");
+            else{
+                String finalScore = score.calculateScore();
+                for(int i = 0; i < 4; i++){
+                players[i].Tellplayer("ENDROUND" + winner);
+                players[i].Tellplayer(finalScore);
+                }
+            }
+                
+        }
+        else{
+            int nextPlayer = p + 1;
+            if (nextPlayer > 3){
+                nextPlayer = 0;
+            }
+            players[nextPlayer].Tellplayer("YOURTURN");
+        }
         
     }
+    
     
     //EXPOSE CARDS TO PLAYERS AND TELLS SCORE OBJECT
     public void expose(int pid, int card){
         expose++;
+        System.out.println(expose);
         if(card == 0){
             exposed += "000";
         }
