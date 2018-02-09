@@ -73,22 +73,25 @@ class Score {
         if(exposedCards.contains(51)){
             aceH = -100;
         }
+        System.out.println(">>>>>>>PLAYER<<<<<<<");
         for(int i = 0; i < cards.size(); i++){
             switch (cards.get(i)){
-                    case 10: scr += pig;
-                    case 21: multiply = true;
-                    case 35: scr += goat;
-                    case 42: scr += -10;
-                    case 43: scr += -10;
-                    case 44: scr += -10;
-                    case 45: scr += -10;
-                    case 46: scr += -10;
-                    case 47: scr += -10;
-                    case 48: scr += -20;
-                    case 49: scr += -30;
-                    case 50: scr += -40;
-                    case 51: scr += aceH;
+                    case 10: scr += pig;break;
+                    case 21: multiply = true;break;
+                    case 35: scr += goat;break;
+                    case 42: scr += -10;break;
+                    case 43: scr += -10;break;
+                    case 44: scr += -10;break;
+                    case 45: scr += -10;break;
+                    case 46: scr += -10;break;
+                    case 47: scr += -10;break;
+                    case 48: scr += -20;break;
+                    case 49: scr += -30;break;
+                    case 50: scr += -40;break;
+                    case 51: scr += aceH;break;
+                    default:break;
             }
+            System.out.println("Card: " + cards.get(i) + " Current score" + scr);
         }
         if(multiply == true){
             scr = scr * 2;
@@ -97,10 +100,8 @@ class Score {
             }
         }
         playerScores[p] += scr;
+        System.out.println(playerScores[p]);
         String score = "Player " + p + ": " + playerScores[p] + "   ";
         return score;
+        }
     }
-    
-    
-    }
-   
