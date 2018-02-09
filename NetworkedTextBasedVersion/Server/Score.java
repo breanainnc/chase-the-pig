@@ -73,7 +73,6 @@ class Score {
         if(exposedCards.contains(51)){
             aceH = -100;
         }
-        System.out.println(">>>>>>>PLAYER<<<<<<<");
         for(int i = 0; i < cards.size(); i++){
             switch (cards.get(i)){
                     case 10: scr += pig;break;
@@ -91,7 +90,6 @@ class Score {
                     case 51: scr += aceH;break;
                     default:break;
             }
-            System.out.println("Card: " + cards.get(i) + " Current score" + scr);
         }
         if(multiply == true){
             scr = scr * 2;
@@ -100,7 +98,6 @@ class Score {
             }
         }
         playerScores[p] += scr;
-        System.out.println(playerScores[p]);
         String score = "Player " + p + ": " + playerScores[p] + "   ";
         return score;
         }
