@@ -94,7 +94,7 @@ class Game{
                 handoutput = new ObjectOutputStream(socket.getOutputStream());
             }
             catch(IOException ex){
-                System.out.print("fuck");
+                System.out.print("error");
             }
         }
         
