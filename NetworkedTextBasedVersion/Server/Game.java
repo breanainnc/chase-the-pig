@@ -81,7 +81,6 @@ package server;
     //EXPOSE CARDS TO PLAYERS AND TELLS SCORE OBJECT
     public void expose(int pid, int card){
         expose++;
-        System.out.println(expose);
         if(card == 0){
             exposed += "000";
         }
@@ -91,7 +90,6 @@ package server;
         exposed += (pid+1);
         }
         if(expose == 4){
-            System.out.println(exposed);
             for(int i = 0; i < 4; i++){
                 players[i].Tellplayer(exposed);
             }
