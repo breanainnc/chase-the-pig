@@ -17,15 +17,24 @@ public class Connection {
          socket = new Socket("localhost",8888);
          inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
          outputToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
-         outputToServer.println("hello");
+         outputToServer.println("READY");
          //startReceiving();
          }
          catch(IOException ex){
              System.err.println(ex);
          }
      }
+     public MessageSender createMessageSender(){
+         MessageSender messageSender = new MessageSender(outputToServer);
+         return messageSender;
+     }
+     
+     //STARTS BACKGROUND THREAD FOR USER RECIVING DATA, DAEMON SET SO STOPS WHEN USER STOPS.
      public void startReceiving(Dealer d){
-         new Thread(new MessageReciever(inputFromServer,outputToServer,d)).start();
+        MessageReceiver incomingMessageThread = new MessageReceiver(inputFromServer,d);
+        Thread MR = new Thread(incomingMessageThread);
+        MR.setDaemon(true);
+        MR.start();
 
      }
 }
