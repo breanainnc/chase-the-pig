@@ -1,44 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ctpclient;
 
 import Logic.Dealer;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import javafx.concurrent.Task;
 
 /**
  *
  * @author brean
  */
-public class MessageReciever implements Runnable{
+public class MessageReceiver extends Task{
         BufferedReader input;
         Dealer d;
-        PrintWriter output;
     
-    public MessageReciever(BufferedReader input,PrintWriter output,Dealer d){
+    public MessageReceiver(BufferedReader input,Dealer d){
         this.input = input;
         this.d = d;
-        this.output = output;
+
     }     
+  
     @Override
-    public void run() {
-        try{
-            output.println("READY");
+    protected Void call() throws Exception {
+         try{
             while(true){
-                
                 String Message = input.readLine();
                 System.out.println(Message);
-                /*
+                
                 if(Message.contains("PLAYER")){
                     char number = Message.charAt(6);
                     d.playerNumber(number);
                 }
-            */
-                    d.sendHand(input.readLine());
+                
+                if(Message.contains("HAND")){
+                    String hand = Message.substring(4);
+                    d.sendHand(hand);
+                }
+                if(Message.contains("PLYREX")){
+                    System.out.println(Message);
+                    String exposedCards = Message.substring(6);
+                    d.cardExposure(exposedCards);
+                }
                 }
                 
         }
@@ -46,6 +47,8 @@ public class MessageReciever implements Runnable{
                     System.err.println(ex);
                 }
         
+        return null;
+       
     }
     
 }
