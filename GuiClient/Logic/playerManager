@@ -1,0 +1,63 @@
+package Logic;
+
+import GUI.SidePlayer;
+import GUI.TopPlayer;
+
+/**
+ *
+ * @author brean
+ */
+public class playerManager {
+    private SidePlayer left,right;
+    private TopPlayer top;
+    int LEFT,RIGHT,TOP;
+    
+    public playerManager(SidePlayer left,SidePlayer right,TopPlayer top){
+        this.left = left;
+        this.right = right;
+        this.top = top;
+    }
+    
+    public void setPlayers(int pid){
+        if(pid == 1){
+            LEFT = 2;            
+            TOP = 3;
+            RIGHT = 4;
+        }
+        if(pid == 2){
+            LEFT = 3;           
+            TOP = 4;
+            RIGHT = 1;
+        }
+        if(pid == 3){
+            LEFT = 4;            
+            TOP = 1;
+            RIGHT = 2;
+        }
+        if(pid == 4){
+            LEFT = 1;            
+            TOP = 2;
+            RIGHT = 3;
+        }
+        left.setText(LEFT);
+        right.setText(RIGHT);
+        top.setText(TOP);
+    }
+    
+    public void addExCard(int pid, int card) throws InterruptedException{
+        if(pid == LEFT){
+            left.addCard(card);
+            
+        }
+        else if(pid == RIGHT){
+            right.addCard(card);
+           
+        }
+        else if(pid == TOP){
+            top.addCard(card);
+            
+        }
+        
+    }
+   
+}
