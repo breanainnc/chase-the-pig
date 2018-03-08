@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
+import javafx.application.Platform;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,30 +25,55 @@ public class HandPane extends Pane{
         background.setFill(Color.MAROON);
         Cards = new HBox(15);
         Cards.setTranslateX(15);
-        
-        
-        
-        getChildren().addAll(background,Cards);
+        PlyrNum = new Text("NO SERVER AVAILABLE");                
+        getChildren().addAll(background,Cards,PlyrNum);
        
     }
+    
+    
     //RETURNS CARDITEM
     public CardItem getCardItem(int i){
         return (CardItem)Cards.getChildren().get(i);
          
     }
+    
+    
+    
     //SETS PLAYER NUMBER
     public void setPlayerNumber(String name){
-        PlyrNum = new Text(name);
-        PlyrNum.setFont(new Font(20));
-        PlyrNum.setTranslateY(140);
-        PlyrNum.setTranslateX(15);
-        getChildren().add(PlyrNum);
+        
+        //ONLY CALLED BY TASK
+        //SO MUST HAPPEN ON APPLICATION THREAD
+        Platform.runLater(new Runnable() {
+            @Override
+                public void run() {
+                    PlyrNum.setText(name);
+                    PlyrNum.setFont(new Font(20));
+                    PlyrNum.setTranslateY(140);
+                    PlyrNum.setTranslateX(15);
+                    
+                }
+        });
     }
-    //ADDS CARD TO HANDPANE
-    public void addCard(int i){
-        Cards.getChildren().add(new CardItem(i));
-        getChildren().add(Cards);
+    
+ 
+    
+    //ADDS CARD TO HANDPANE 
+    public void addCard(int i) throws InterruptedException{
+        
+        //ONLY CALLED BY TASK
+        //SO MUST HAPPEN ON APPLICATION THREAD
+        Platform.runLater(new Runnable() {
+            @Override
+                public void run() {
+                    Cards.getChildren().add(new CardItem(i));
+                        }
+                });
+        Thread.sleep(250);
+
     }
+    
+    
     //RETURNS AMOUNT OF CARDS
     public int cardCount(){
         return Cards.getChildren().size();
