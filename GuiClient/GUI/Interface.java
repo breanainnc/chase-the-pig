@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-
 /**
  *
  * @author brean
@@ -21,6 +20,7 @@ public class Interface extends Application {
     @Override
     public void start(Stage primaryStage) {
         
+        //SETS UP STAGES AND SCENES
         this.primaryStage = primaryStage; 
         this.primaryStage.setResizable(false);
         MAINMENU = new MainMenu();
@@ -30,7 +30,7 @@ public class Interface extends Application {
         GamePlayScene= new Scene(GAMEPLAY);
         
        
-        
+        //CONTROLS FOR THE MAINMENU
         MainMenuScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.UP) {
                 if (currentMenuChoice > 0) {
@@ -50,6 +50,7 @@ public class Interface extends Application {
             }
         });
         
+        //CONTROLS FOR THE GAMEPLAY
         GamePlayScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.LEFT) {
                 if (currentMenuChoice > 0) {
@@ -63,23 +64,26 @@ public class Interface extends Application {
                 }
             }
             if (event.getCode() == KeyCode.ENTER) {
-                //GAMEPLAY.addCard(hpane.Cards.getChildren().size() + 1);
+                GAMEPLAY.controlEnter(currentMenuChoice);
             }
+            if (event.getCode() == KeyCode.SPACE) {
+                GAMEPLAY.controlSpaceBar(currentMenuChoice);
+            }
+            
         });
         
-        
-        
+        //SETS UP STAGE
         primaryStage.setTitle("CHASE THE PIG");
         primaryStage.setScene(MainMenuScene);
         primaryStage.show();
     }
     
-    
-        private void sceneChanger(){
+    //CHANGES SCENES IN MAINMENU
+    private void sceneChanger(){
         
         if(currentMenuChoice == 0){
             primaryStage.setScene(GamePlayScene);
-            //GAMEPLAY.connectToServer();
+            GAMEPLAY.connect();
             MAINMENU.stopAnimation();
         }
         else if(currentMenuChoice == 1){
@@ -87,14 +91,8 @@ public class Interface extends Application {
         }
         else if(currentMenuChoice == 2){
             System.exit(0);
-        }
-        else
-            System.out.println("Button press");
-            
+        }            
     }
-       
-    
-
     /**
      * @param args the command line arguments
      */
