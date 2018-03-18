@@ -53,7 +53,7 @@ public class CardItem extends VBox{
             }
         }
     }
-       
+  
     
     public void DisplayArrow(boolean c){
         pointer.setVisible(c);
@@ -62,4 +62,3 @@ public class CardItem extends VBox{
         return CardInt;
     }
 }
-
