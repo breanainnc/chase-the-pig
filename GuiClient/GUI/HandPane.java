@@ -1,5 +1,6 @@
 package GUI;
 
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -17,6 +18,9 @@ import javafx.scene.text.Text;
 public class HandPane extends Pane{
        public HBox Cards;
        public Text PlyrNum;
+       public Text ScoreSheet;
+       public Text Round;
+       private int roundInt = 1;
        
     //CONSTRUCTOR FOR HANDPANE
     public HandPane(){
@@ -25,8 +29,19 @@ public class HandPane extends Pane{
         background.setFill(Color.MAROON);
         Cards = new HBox(15);
         Cards.setTranslateX(15);
-        PlyrNum = new Text("NO SERVER AVAILABLE");                
-        getChildren().addAll(background,Cards,PlyrNum);
+        PlyrNum = new Text("NO SERVER AVAILABLE"); 
+        Text Score = new Text("Score:");
+        Score.setTranslateY(140);
+        Score.setTranslateX(190);
+        Score.setFont(new Font(20));
+        Round = new Text("Round: 1");
+        Round.setTranslateY(140);
+        Round.setTranslateX(600);
+        Round.setFont(new Font(20));
+        ScoreSheet = new Text("Player 1: 0 Player 2: 0 Player 3: 0 Player 4: 0");
+        ScoreSheet.setTranslateY(140);
+        ScoreSheet.setTranslateX(250);
+        getChildren().addAll(background,Cards,PlyrNum,Score,ScoreSheet,Round);
        
     }
     
@@ -36,7 +51,14 @@ public class HandPane extends Pane{
         return (CardItem)Cards.getChildren().get(i);
          
     }
-    
+    public ArrayList<Integer> getCardList(){
+       ArrayList<Integer> hand = new ArrayList<Integer>(); 
+       for(int i = 0; i < 13; i++){
+           CardItem currentCard = getCardItem(i);
+           hand.add(currentCard.getCardNumber());
+       }
+       return hand;
+    }
     
     
     //SETS PLAYER NUMBER
@@ -56,7 +78,14 @@ public class HandPane extends Pane{
         });
     }
     
- 
+    public void setScoreSheet(String scores){
+        Platform.runLater(new Runnable() {
+            public void run(){
+                ScoreSheet.setText(scores);
+            }
+        });
+        ScoreSheet.setText(scores);
+    }
     
     //ADDS CARD TO HANDPANE 
     public void addCard(int i) throws InterruptedException{
@@ -77,5 +106,15 @@ public class HandPane extends Pane{
     //RETURNS AMOUNT OF CARDS
     public int cardCount(){
         return Cards.getChildren().size();
+    }
+
+    public void removeCard(int card) {
+        System.out.println(card +" to remove");
+        Cards.getChildren().remove(card);
+    }
+
+    public void nextRound() {
+        roundInt++;
+        Round.setText("Round: " + roundInt);
     }
 }
