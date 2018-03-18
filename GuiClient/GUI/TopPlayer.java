@@ -56,4 +56,7 @@ public class TopPlayer extends StackPane{
         });
         Thread.sleep(100);
     }
+    public void removeCards(){
+        exposedImgs.getChildren().clear();
+    }
 }
