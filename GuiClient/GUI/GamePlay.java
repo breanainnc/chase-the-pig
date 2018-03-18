@@ -1,5 +1,7 @@
 package GUI;
 import Logic.Dealer;
+import Logic.GamePlayLogic;
+import Logic.LegalCommand;
 import Logic.playerManager;
 import ctpclient.Connection;
 import ctpclient.MessageSender;
@@ -11,7 +13,9 @@ import javafx.scene.layout.Pane;
  * @author brean
  */
 public class GamePlay extends Pane{
-         HandPane hpane;
+         HandPane handpane;
+         LegalCommand legalCommand;
+         GamePlayLogic gameplayLogic;
          MessageSender outMessenger;
          TrickPane trickPane;
          Connection c;
@@ -27,7 +31,9 @@ public class GamePlay extends Pane{
         b.setMaxSize(windowWidth, windowHeight);
         trickPane = new TrickPane();
         //trickPane.setAlignment(Pos.CENTER);
-        hpane = new HandPane();
+        handpane = new HandPane();
+        
+        gameplayLogic =  new GamePlayLogic(handpane);
         
         leftPlayer = new SidePlayer(); 
         rightPlayer = new SidePlayer(); 
@@ -38,7 +44,7 @@ public class GamePlay extends Pane{
         b.setRight(rightPlayer);
         b.setLeft(leftPlayer);  
         
-        b.setBottom(hpane);
+        b.setBottom(handpane);
         b.setCenter(trickPane);
 
         getChildren().add(b);
@@ -48,58 +54,63 @@ public class GamePlay extends Pane{
     //CONNECTS TO SERVER
     public void connect(){
         c = new Connection();
-        playerManager pm = new playerManager(leftPlayer,rightPlayer,topPlayer);
-        Dealer d = new Dealer(hpane,pm);
+        playerManager pm = new playerManager(leftPlayer,rightPlayer,topPlayer,trickPane);
+        Dealer d = new Dealer(handpane,pm,trickPane,gameplayLogic);
         c.startReceiving(d);
         
         outMessenger = c.createMessageSender();
+        legalCommand = new LegalCommand(outMessenger,gameplayLogic);
     }
    
     //LEFT ARROW CONTROL
     public void controlLeft(int choice){
-        hpane.getCardItem(choice).DisplayArrow(false);
-        hpane.getCardItem(--choice).DisplayArrow(true);
+        handpane.getCardItem(choice).DisplayArrow(false);
+        handpane.getCardItem(--choice).DisplayArrow(true);
     }
     //RIGHT ARROW CONTROL
     public void controlRight(int choice){
-        hpane.getCardItem(choice).DisplayArrow(false);
-        hpane.getCardItem(++choice).DisplayArrow(true);
+        handpane.getCardItem(choice).DisplayArrow(false);
+        handpane.getCardItem(++choice).DisplayArrow(true);
     }
     
     //ENTER CONTROL
     public void controlEnter(int choice){
-        CardItem cardSelection = hpane.getCardItem(choice);
+        CardItem cardSelection = handpane.getCardItem(choice);
         int cardNum = cardSelection.getCardNumber();
         
         //METHOD THAT LETS USER MAKE A CHOICE FOR EXPOSURE OF CARDS
         if(trickPane.getExposeSection() == true){
             if(cardNum == PIG || cardNum == GOAT || cardNum == ACEH || cardNum == TENC){
-                hpane.getCardItem(choice).exposeQuestion(cardNum);
-                outMessenger.expose(cardNum);
+                handpane.getCardItem(choice).exposeQuestion(cardNum);
+                legalCommand.exposeCard(cardNum, true);
             }
         }
+        //CALLS ON LEGAL COMMAND TO CHECK IF IT IS THE USERS TURN 
+        //AND IF THE CARD CHOSEN COMPLIES WITH GAME RULES
         else{
-        trickPane.cardPlayed(cardNum);
+            if(legalCommand.playCard(cardNum)){
+                handpane.removeCard(choice);
+            }
         }
     }
     
     //SPACEBAR CONTROL
     public void controlSpaceBar(int choice){
-        CardItem cardSelection = hpane.getCardItem(choice);
+        CardItem cardSelection = handpane.getCardItem(choice);
         int cardNum = cardSelection.getCardNumber();
         
         //METHOD THAT LETS USER MAKE CHOICE FOR EXPOSURE OF CARDS
         if(trickPane.getExposeSection() == true){
             if(cardNum == PIG || cardNum == GOAT || cardNum == ACEH || cardNum == TENC){
-                hpane.getCardItem(choice).exposeQuestion(0);
-                outMessenger.expose(0);
+                handpane.getCardItem(choice).exposeQuestion(0);
+                legalCommand.exposeCard(cardNum, false);
             }
         }
     }
     
     //CARD COUNT IN HAND
     public int cardCount(){
-        return hpane.cardCount();
+        return handpane.cardCount();
     }
     
 }
