@@ -21,4 +21,11 @@ public class MessageSender {
             out.println("EXPOSE" + card);
         }
     }
+    public void playCard(int card){
+        out.println("PLAY" + card);
+    }
+    
+  public void ReadyMessage(){
+      out.println("READY");
+  }
 }
