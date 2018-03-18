@@ -2,6 +2,8 @@ package Logic;
 
 import GUI.SidePlayer;
 import GUI.TopPlayer;
+import GUI.TrickPane;
+import javafx.application.Platform;
 
 /**
  *
@@ -10,12 +12,14 @@ import GUI.TopPlayer;
 public class playerManager {
     private SidePlayer left,right;
     private TopPlayer top;
+    private TrickPane trickPane;
     int LEFT,RIGHT,TOP;
     
-    public playerManager(SidePlayer left,SidePlayer right,TopPlayer top){
+    public playerManager(SidePlayer left,SidePlayer right,TopPlayer top, TrickPane trickPane){
         this.left = left;
         this.right = right;
         this.top = top;
+        this.trickPane = trickPane;
     }
     
     public void setPlayers(int pid){
@@ -43,7 +47,20 @@ public class playerManager {
         right.setText(RIGHT);
         top.setText(TOP);
     }
-    
+    public void playACard(int pid, int card){
+        if(pid == LEFT){
+            trickPane.leftcardPlayed(card);
+        }
+        else if(pid == RIGHT){
+            trickPane.rightcardPlayed(card);
+        }
+        else if(pid == TOP){
+            trickPane.topcardPlayed(card);
+        }
+        else{
+            trickPane.yourcardPlayed(card);
+        }
+    }
     public void addExCard(int pid, int card) throws InterruptedException{
         if(pid == LEFT){
             left.addCard(card);
@@ -59,5 +76,13 @@ public class playerManager {
         }
         
     }
+
+    public void removeCards() {
+        left.removeCards();
+        top.removeCards();
+        right.removeCards();
+    }
+
+    }
    
-}
+
