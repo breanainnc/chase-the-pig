@@ -18,7 +18,7 @@ public class Connection {
          inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
          outputToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
          outputToServer.println("READY");
-         //startReceiving();
+         
          }
          catch(IOException ex){
              System.err.println(ex);
