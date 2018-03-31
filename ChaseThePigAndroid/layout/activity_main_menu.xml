@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainMenuActivity"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#34b112"
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="34dp">
+        <ImageView
+            android:id="@+id/cardIcon"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/heart" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/pig"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:cropToPadding="false"
+                android:src="@mipmap/ic_launcher" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_action_name" />
+
+            <ImageView
+                android:id="@+id/goat"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/goat" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/findgame_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/findgame_button" />
+
+        <Button
+            android:id="@+id/rules_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rules_button" />
+
+        <Button
+            android:id="@+id/quit_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quit_button" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
